@@ -1,0 +1,13 @@
+{
+    "destinations": [
+        {
+            "name": "S4_Coupa",
+            "url": "https://mci-integration-suite-dev.it-cpi024-rt.cfapps.eu10-002.hana.ondemand.com",
+            "forwardAuthToken": true
+        },
+        {
+            "name": "ui5",
+            "url": "https://ui5.sap.com"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+<mvc:View
+    controllerName="cpiapiintegrationui.controller.Homepage"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="Homepage"
+        showHeader="false"
+    >
+        <Button
+            text="Submit"
+            press="onSubmit"
+        />
+    </Page>
+</mvc:View>

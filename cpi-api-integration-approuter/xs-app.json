@@ -1,0 +1,12 @@
+{
+  "authenticationMethod": "none",
+  "welcomeFile": "/cpiapiintegrationui",
+  "routes": [
+    {
+      "source": "^/http/PaymentFile/Coupa",
+      "destination": "S4_Coupa",
+      "authenticationType": "xsuaa",
+      "httpMethods": ["POST"]
+    }
+  ]
+}

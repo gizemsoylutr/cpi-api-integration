@@ -1,0 +1,83 @@
+_schema-version: "3.2"
+ID: cpi-api-integration
+version: 0.0.1
+modules:
+- name: cpi-api-integration-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: cpi-api-integration-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - cpiapiintegrationui.zip
+      name: cpiapiintegrationui
+      target-path: resources/
+- name: cpiapiintegrationui
+  type: html5
+  path: cpi-api-integration-ui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: cpi-api-integration-approuter
+  type: approuter.nodejs
+  path: cpi-api-integration-approuter
+  requires:
+  - name: cpi-api-integration_html_repo_runtime
+  - name: uaa_cpi-api-integration
+  parameters:
+    disk-quota: 512M
+    memory: 512M
+- name: cpi-api-integration_ui_deployer
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: cpi-api-integration-repo-host
+    parameters:
+      content-target: true
+resources:
+- name: cpi-api-integration-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: cpi-api-integration-html5-srv
+    service-plan: app-host
+- name: cpi-api-integration-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: cpi-api-integration-destination-service
+    service-plan: lite
+- name: cpi-api-integration_html_repo_runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-runtime
+- name: uaa_cpi-api-integration
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: cpi-api-integration-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
